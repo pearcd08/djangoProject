@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
+{% block title %}
+{{ course}}
+{% endblock %}
 {% block content %}
     {% if user.is_authenticated and user.is_superuser %}
 
-        <h5>Name: {% block title %}{{ course.name }} {% endblock %}</h5>
+        <h5>Name: {{ course.name }} </h5>
         <h5>Code: {{ course.code }}</h5>
+        <br>
+
         <br>
         <a href="{% url 'course-list' %}" class="btn btn-primary">Back</a>
         <a href="{% url 'update-course' course.id %}" class="btn btn-warning">Edit</a>

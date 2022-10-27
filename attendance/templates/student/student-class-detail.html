@@ -1,52 +1,45 @@
-
 {% extends 'base.html' %}
-{#college day#}
-
-    {% block title %}
- Attendance Detail
+{% block title %}
+{{ student}} Attendance
 {% endblock %}
-
-
 {% block content %}
-    <h3>{{ student }}</h3>
-    <h3>{{ selected_class }} </h3>
+    {% if user.is_authenticated and user.is_superuser %}
+        <h3>{{ student }}</h3>
+        <h3>{{ selected_class }} </h3>
 
-    <br>
-    <h5>Class Dates:</h5>
-    <ul class="list-group" style="width: 200px; font-weight: bold">
-        {% for collegeday in selected_class.collegeday_set.all %}
-            {% if collegeday %}
-                {% if student not in collegeday.students.all %}
-                    <li class="list-group-item list-group-item-danger">
-                        {{ collegeday }} - Absent
-                    </li>
+        <br>
+        <h5>Class Dates:</h5>
+        <ul class="list-group" style="width: 200px; font-weight: bold">
+            {% for collegeday in selected_class.collegeday_set.all %}
+                {% if collegeday %}
+                    {% if student not in collegeday.students.all %}
+                        <li class="list-group-item list-group-item-danger">
+                            {{ collegeday }} - Absent
+                        </li>
+                    {% else %}
+                        <li class="list-group-item list-group-item-success">
+                            {{ collegeday }} - Present
+                        </li>
+                    {% endif %}
                 {% else %}
-                    <li class="list-group-item list-group-item-success">
-                        {{ collegeday }} - Present
-                    </li>
+                    No Dates
                 {% endif %}
-            {% else %}
-                No Dates
-            {% endif %}
 
 
-        {% endfor %}
-    </ul>
-    <br>
-    <br>
-    <h5>Attendance Percentage: {{ percentage }}%</h5>
-    <br>
-    <br>
+            {% endfor %}
+        </ul>
+        <br>
+        <br>
+        <h5>Attendance Percentage: {{ percentage }}%</h5>
+        <br>
+        <br>
+        {% if percentage < 75 %}
+            <a href="{% url 'email-student' student_id=student.student_id class_id=selected_class.pk %}"
+               class="btn btn-danger">Email Student</a>
+        {% endif %}
+        <a href="{% url 'student-detail' student.student_id %}" class="btn btn-primary">Back</a>
 
-    {% if percentage < 75%}
-           <a href="{% url 'email-student' student_id=student.student_id class_id=selected_class.pk %}" class="btn btn-danger">Email Student</a>
+    {% else %}
+        <H1>YOU DONT HAVE ACCESS</H1>
     {% endif %}
-     <a href="{% url 'student-detail' student.student_id %}" class="btn btn-primary">Back</a>
-
-
-
-
-
-
-
 {% endblock %}

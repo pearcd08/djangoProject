@@ -1,201 +1,210 @@
 {% extends "base.html" %}
-
+{% block title %}
+    Update User
+{% endblock %}
 {% block content %}
+    {% if user.is_authenticated  and user.is_superuser %}
 
 
-
-    {% if "student" in request.path %}
-        <section class="vh-100 gradient-custom">
-            <div class="container py-5 h-100">
-                <div class="row justify-content-center align-items-center h-100">
-                    <div class="col-12 col-lg-9 col-xl-7">
-                        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                            <div class="card-body p-4 p-md-5">
-                                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Update {{ student }}</h3>
-                                <form method="post" action="{% url 'update-student' student_id=student.student_id %}">
-                                    {% csrf_token %}
-                                    <p style="color: red">{{ message }}</p>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
-                                            <div class="form-outline">
-                                                <input type="text" id="username" name="username"
-                                                       value="{{ student.user.username }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="username">User
-                                                    Name</label>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-
-                                            <div class="form-outline">
-
-                                                <input type="email" id="email" name="email"
-                                                       value="{{ student.user.email }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="email">Email
-                                                    Address</label>
+        {% if "student" in request.path %}
+            <section class="vh-100 gradient-custom">
+                <div class="container py-5 h-100">
+                    <div class="row justify-content-center align-items-center h-100">
+                        <div class="col-12 col-lg-9 col-xl-7">
+                            <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                                <div class="card-body p-4 p-md-5">
+                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Update {{ student }}</h3>
+                                    <form method="post"
+                                          action="{% url 'update-student' student_id=student.student_id %}">
+                                        {% csrf_token %}
+                                        <p style="color: red">{{ message }}</p>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
+                                                    <input type="text" id="username" name="username"
+                                                           value="{{ student.user.username }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="username">User
+                                                        Name</label>
+                                                </div>
 
                                             </div>
+                                            <div class="col-md-6 mb-4">
 
-                                        </div>
-                                        <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
 
-                                            <div class="form-outline">
-                                                <input type="text" id="firstname" name="firstname"
-                                                       value="{{ student.user.first_name }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="firstname" name="firstname">First
-                                                    Name</label>
+                                                    <input type="email" id="email" name="email"
+                                                           value="{{ student.user.email }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="email">Email
+                                                        Address</label>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 mb-4">
+
+                                                <div class="form-outline">
+                                                    <input type="text" id="firstname" name="firstname"
+                                                           value="{{ student.user.first_name }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="firstname" name="firstname">First
+                                                        Name</label>
+                                                </div>
+
                                             </div>
 
-                                        </div>
+                                            <div class="col-md-6 mb-4">
 
-                                        <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
+                                                    <input type="text" id="lastname" name="lastname"
+                                                           value="{{ student.user.last_name }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="lastname">Last
+                                                        Name</label>
+                                                </div>
 
-                                            <div class="form-outline">
-                                                <input type="text" id="lastname" name="lastname"
-                                                       value="{{ student.user.last_name }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="lastname">Last
-                                                    Name</label>
                                             </div>
-
                                         </div>
-                                    </div>
 
 
-                                    <div class="row">
-                                        <p style="color: red">{{ passwordmessage }}</p>
-                                        <div class="col-md-6 mb-4 pb-2">
+                                        <div class="row">
+                                            <p style="color: red">{{ passwordmessage }}</p>
+                                            <div class="col-md-6 mb-4 pb-2">
 
-                                            <div class="form-outline">
-                                                <input type="password" id="password1" name="password1"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="password1">New Password(Optional)</label>
+                                                <div class="form-outline">
+                                                    <input type="password" id="password1" name="password1"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="password1">New
+                                                        Password(Optional)</label>
+                                                </div>
+
                                             </div>
+                                            <div class="col-md-6 mb-4 pb-2">
 
-                                        </div>
-                                        <div class="col-md-6 mb-4 pb-2">
+                                                <div class="form-outline">
+                                                    <input type="password" id="password2" name="password2"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="password2">Confirm
+                                                        Password</label>
+                                                </div>
 
-                                            <div class="form-outline">
-                                                <input type="password" id="password2" name="password2"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="password2">Confirm
-                                                    Password</label>
                                             </div>
-
                                         </div>
-                                    </div>
 
 
-                                    <div class="mt-4 pt-2">
-                                        <input class="btn btn-primary btn-lg" type="submit" value="Update Student"/>
-                                    </div>
+                                        <div class="mt-4 pt-2">
+                                            <input class="btn btn-primary btn-lg" type="submit" value="Update Student"/>
+                                        </div>
 
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    {% elif "lecturer" in request.path %}
-        <section class="vh-100 gradient-custom">
-            <div class="container py-5 h-100">
-                <div class="row justify-content-center align-items-center h-100">
-                    <div class="col-12 col-lg-9 col-xl-7">
-                        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                            <div class="card-body p-4 p-md-5">
-                                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Update {{ lecturer }}</h3>
-                                <form method="post"
-                                      action="{% url 'update-lecturer' lecturer_id=lecturer.lecturer_id %}">
-                                    {% csrf_token %}
-                                    <p style="color: red">{{ message }}</p>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
-                                            <div class="form-outline">
-                                                <input type="text" id="username" name="username"
-                                                       value="{{ lecturer.user.username }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="username">User
-                                                    Name</label>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-
-                                            <div class="form-outline">
-
-                                                <input type="email" id="email" name="email"
-                                                       value="{{ lecturer.user.email }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="email">Email
-                                                    Address</label>
+            </section>
+        {% elif "lecturer" in request.path %}
+            <section class="vh-100 gradient-custom">
+                <div class="container py-5 h-100">
+                    <div class="row justify-content-center align-items-center h-100">
+                        <div class="col-12 col-lg-9 col-xl-7">
+                            <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                                <div class="card-body p-4 p-md-5">
+                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Update {{ lecturer }}</h3>
+                                    <form method="post"
+                                          action="{% url 'update-lecturer' lecturer_id=lecturer.lecturer_id %}">
+                                        {% csrf_token %}
+                                        <p style="color: red">{{ message }}</p>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
+                                                    <input type="text" id="username" name="username"
+                                                           value="{{ lecturer.user.username }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="username">User
+                                                        Name</label>
+                                                </div>
 
                                             </div>
+                                            <div class="col-md-6 mb-4">
 
-                                        </div>
-                                        <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
 
-                                            <div class="form-outline">
-                                                <input type="text" id="firstname" name="firstname"
-                                                       value="{{ lecturer.user.first_name }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="firstname" name="firstname">First
-                                                    Name</label>
+                                                    <input type="email" id="email" name="email"
+                                                           value="{{ lecturer.user.email }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="email">Email
+                                                        Address</label>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 mb-4">
+
+                                                <div class="form-outline">
+                                                    <input type="text" id="firstname" name="firstname"
+                                                           value="{{ lecturer.user.first_name }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="firstname" name="firstname">First
+                                                        Name</label>
+                                                </div>
+
                                             </div>
 
-                                        </div>
+                                            <div class="col-md-6 mb-4">
 
-                                        <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
+                                                    <input type="text" id="lastname" name="lastname"
+                                                           value="{{ lecturer.user.last_name }}"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="lastname">Last
+                                                        Name</label>
+                                                </div>
 
-                                            <div class="form-outline">
-                                                <input type="text" id="lastname" name="lastname"
-                                                       value="{{ lecturer.user.last_name }}"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="lastname">Last
-                                                    Name</label>
                                             </div>
-
                                         </div>
-                                    </div>
 
 
-                                    <div class="row">
-                                        <p style="color: red">{{ passwordmessage }}</p>
-                                        <div class="col-md-6 mb-4 pb-2">
+                                        <div class="row">
+                                            <p style="color: red">{{ passwordmessage }}</p>
+                                            <div class="col-md-6 mb-4 pb-2">
 
-                                            <div class="form-outline">
-                                                <input type="password" id="password1" name="password1"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="password1">New Password (Optional)</label>
+                                                <div class="form-outline">
+                                                    <input type="password" id="password1" name="password1"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="password1">New Password
+                                                        (Optional)</label>
+                                                </div>
+
                                             </div>
+                                            <div class="col-md-6 mb-4 pb-2">
 
-                                        </div>
-                                        <div class="col-md-6 mb-4 pb-2">
+                                                <div class="form-outline">
+                                                    <input type="password" id="password2" name="password2"
+                                                           class="form-control form-control-lg"/>
+                                                    <label class="form-label" for="password2">Confirm
+                                                        Password</label>
+                                                </div>
 
-                                            <div class="form-outline">
-                                                <input type="password" id="password2" name="password2"
-                                                       class="form-control form-control-lg"/>
-                                                <label class="form-label" for="password2">Confirm
-                                                    Password</label>
                                             </div>
-
                                         </div>
-                                    </div>
 
 
-                                    <div class="mt-4 pt-2">
-                                        <input class="btn btn-primary btn-lg" type="submit" value="Update Lecturer"/>
-                                    </div>
+                                        <div class="mt-4 pt-2">
+                                            <input class="btn btn-primary btn-lg" type="submit"
+                                                   value="Update Lecturer"/>
+                                        </div>
 
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        {% endif %}
+    {% else %}
+        <h1>YOU DONT HAVE ACCESS</h1>
     {% endif %}
 {% endblock %}

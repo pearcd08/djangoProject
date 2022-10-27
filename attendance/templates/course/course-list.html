@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-
+{% block title %}
+    Courses
+{% endblock %}
 {% block content %}
 
     {% if user.is_authenticated and user.is_superuser %}
-        {% block title %}
-            <h5>Courses</h5>
-        {% endblock %}
+        <h5>Courses</h5>
 
         <ul class="list-group">
             {% for Course in object_list %}

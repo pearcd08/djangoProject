@@ -1,7 +1,6 @@
 import re
 from turtle import pd
 
-
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
@@ -30,6 +29,105 @@ class ListStudent(ListView):
     model = Student
     template_name = "student/student-list.html"
 
+class ListLecturer(ListView):
+    model = Lecturer
+    template_name = "lecturer/lecturer-list.html"
+
+
+class LecturerDetailView(DetailView):
+    model = Lecturer
+    template_name = "lecturer/lecturer-detail.html"
+
+
+class UpdateLecturerView(UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = "reusable/update-reusable.html"
+    success_url = reverse_lazy('lecturer-list')
+
+
+class DeleteLecturerView(DeleteView):
+    model = User
+    template_name = "reusable/delete-reusable.html"
+    success_url = reverse_lazy('lecturer-list')
+
+
+# Classes
+class ListClass(ListView):
+    model = Class
+    template_name = "class/class-list.html"
+
+
+class AddClassView(CreateView):
+    model = Class
+    form_class = ClassForm
+    template_name = 'reusable/add-reusable.html'
+
+
+class UpdateClassView(UpdateView):
+    model = Class
+    form_class = ClassForm
+    template_name = "reusable/update-reusable.html"
+
+
+class DeleteClassView(DeleteView):
+    model = Class
+    template_name = "reusable/delete-reusable.html"
+    success_url = reverse_lazy('class-list')
+
+
+# Courses
+class ListCourse(ListView):
+    model = Course
+    template_name = "course/course-list.html"
+
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = "course/course-detail.html"
+
+
+class AddCourseView(CreateView):
+    model = Course
+    form_class = CourseForm
+    template_name = 'reusable/add-reusable.html'
+
+
+class UpdateCourseView(UpdateView):
+    model = Course
+    form_class = CourseForm
+    template_name = "reusable/update-reusable.html"
+
+
+class DeleteCourseView(DeleteView):
+    model = Course
+    template_name = "reusable/delete-reusable.html"
+    success_url = reverse_lazy('course-list')
+
+
+# Semesters
+class ListSemester(ListView):
+    model = Semester
+    template_name = "semester/semester-list.html"
+
+
+class AddSemesterView(CreateView):
+    model = Semester
+    form_class = SemesterForm
+    template_name = 'reusable/add-reusable.html'
+
+
+class UpdateSemesterView(UpdateView):
+    model = Semester
+    form_class = SemesterForm
+    template_name = "reusable/update-reusable.html"
+
+
+class DeleteSemesterView(DeleteView):
+    model = Semester
+    template_name = "reusable/delete-reusable.html"
+    success_url = reverse_lazy('semester-list')
+
 
 def studentDetail(request, student_id):
     student = get_object_or_404(Student, student_id=student_id)
@@ -46,16 +144,16 @@ def studentDetail(request, student_id):
         total_collegedays = CollegeDay.objects.filter(collegeclass_id=class_id)
         attended_collegedays = CollegeDay.objects.filter(collegeclass_id=class_id, students=student_id)
 
-        attendance_result =  attended_collegedays.count() / total_collegedays.count()
+        attendance_result = attended_collegedays.count() / total_collegedays.count()
         attendance_percentage = int(round(attendance_result * 100))
         percentageList.append(attendance_percentage)
 
         return render(request, "student/student-detail.html", {
-        "student": student,
-        "student_classes": student_classes,
-        "percentages": percentageList
+            "student": student,
+            "student_classes": student_classes,
+            "percentages": percentageList
 
-    })
+        })
 
 
 def studentClassDetail(request, student_id, class_id):
@@ -251,7 +349,8 @@ def uploadStudents(request):
                     firstname = firstnames[i]
                     lastname = lastnames[i]
                     password = str(dobs[i]).split(" ")[0].replace("-", "")
-                    failed_usernames.append(firstname + " " + lastname + " - Username: " + username + " Password:" +password)
+                    failed_usernames.append(
+                        firstname + " " + lastname + " - Username: " + username + " Password:" + password)
                     i = i + 1
 
                 else:
@@ -306,104 +405,7 @@ def uploadStudents(request):
 
 
 # Lecturers
-class ListLecturer(ListView):
-    model = Lecturer
-    template_name = "lecturer/lecturer-list.html"
 
-
-class LecturerDetailView(DetailView):
-    model = Lecturer
-    template_name = "lecturer/lecturer-detail.html"
-
-
-class UpdateLecturerView(UpdateView):
-    model = User
-    form_class = UserForm
-    template_name = "reusable/update-reusable.html"
-    success_url = reverse_lazy('lecturer-list')
-
-
-class DeleteLecturerView(DeleteView):
-    model = User
-    template_name = "reusable/delete-reusable.html"
-    success_url = reverse_lazy('lecturer-list')
-
-
-# Classes
-class ListClass(ListView):
-    model = Class
-    template_name = "class/class-list.html"
-
-
-class AddClassView(CreateView):
-    model = Class
-    form_class = ClassForm
-    template_name = 'reusable/add-reusable.html'
-
-
-class UpdateClassView(UpdateView):
-    model = Class
-    form_class = ClassForm
-    template_name = "reusable/update-reusable.html"
-
-
-class DeleteClassView(DeleteView):
-    model = Class
-    template_name = "reusable/delete-reusable.html"
-    success_url = reverse_lazy('class-list')
-
-
-# Courses
-class ListCourse(ListView):
-    model = Course
-    template_name = "course/course-list.html"
-
-
-class CourseDetailView(DetailView):
-    model = Course
-    template_name = "course/course-detail.html"
-
-
-class AddCourseView(CreateView):
-    model = Course
-    form_class = CourseForm
-    template_name = 'reusable/add-reusable.html'
-
-
-class UpdateCourseView(UpdateView):
-    model = Course
-    form_class = CourseForm
-    template_name = "reusable/update-reusable.html"
-
-
-class DeleteCourseView(DeleteView):
-    model = Course
-    template_name = "reusable/delete-reusable.html"
-    success_url = reverse_lazy('course-list')
-
-
-# Semesters
-class ListSemester(ListView):
-    model = Semester
-    template_name = "semester/semester-list.html"
-
-
-class AddSemesterView(CreateView):
-    model = Semester
-    form_class = SemesterForm
-    template_name = 'reusable/add-reusable.html'
-
-
-class UpdateSemesterView(UpdateView):
-    model = Semester
-    form_class = SemesterForm
-    template_name = "reusable/update-reusable.html"
-
-
-class DeleteSemesterView(DeleteView):
-    model = Semester
-    template_name = "reusable/delete-reusable.html"
-    success_url = reverse_lazy('semester-list')
 
 
 def AddCollegeDay(request):

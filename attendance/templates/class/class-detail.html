@@ -52,8 +52,9 @@
             <h5>Other Students</h5>
             <ul class="list-group" style="width: 400px">
                 {% for student in students %}
-                    <li class="list-group-item">
+
                         {% if student not in class.students.all %}
+                            <li class="list-group-item">
                             {% if user.is_superuser %}
                                 <a href="{% url 'student-detail' student.pk %}">{{ student }}</a>
                                 <a href="{% url 'enrol-student' class_id=class.id student_id=student.student_id %}"
@@ -61,8 +62,9 @@
                             {% else %}
                                 <p>{{ student }}<p>
                             {% endif %}
+                                </li>
                         {% endif %}
-                    </li>
+
                 {% endfor %}
             </ul>
             <br>

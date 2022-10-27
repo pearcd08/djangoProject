@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-{#college day#}
+{% block title %}
+{{ collegeday }}
+{% endblock %}
 {% block content %}
 
     {% if user.is_authenticated %}

@@ -1,21 +1,28 @@
 {% extends "base.html" %}
+{% block title %}
+    Update
+{% endblock %}
 {% block content %}
-    {% if "lecturer" in request.path or "student" in request.path %}
-        <h1>Update: {{ user.first_name }} {{ user.last_name }}</h1>
-    {% elif "class" in request.path %}
-        <h1>Update: {{ class }}</h1>
-    {% elif "course" in request.path %}
-        <h1>Update: {{ course }}</h1>
-    {% elif "semester" in request.path %}
-        <h1>Update: {{ semester }}</h1>
-    {% endif %}
+    {% if user.is_authenticated  and user.is_superuser %}
+        {% if "lecturer" in request.path or "student" in request.path %}
+            <h1>Update: {{ user.first_name }} {{ user.last_name }}</h1>
+        {% elif "class" in request.path %}
+            <h1>Update: {{ class }}</h1>
+        {% elif "course" in request.path %}
+            <h1>Update: {{ course }}</h1>
+        {% elif "semester" in request.path %}
+            <h1>Update: {{ semester }}</h1>
+        {% endif %}
 
-    <div>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {{ form.media }}
-            <input type="submit" value="Update">
-        </form>
-    </div>
+        <div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{ form.media }}
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    {% else %}
+        <h1>YOU DONT HAVE ACCESS</h1>
+    {% endif %}
 {% endblock %}

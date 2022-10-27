@@ -4,14 +4,15 @@
     {{ lecturer }}
 {% endblock %}
 {% block content %}
-    <br>
-    <h5>First Name: {{ lecturer.user.first_name }} </h5>
-    <h5>Last Name: {{ lecturer.user.last_name }} </h5>
-    <h5>Email: {{ lecturer.user.email }}</h5>
-    <h5>DOB: {{ lecturer.dob }}</h5>
-    <br>
     {% if user.is_authenticated %}
         {% if request.user.is_superuser %}
+            <br>
+            <h5>First Name: {{ lecturer.user.first_name }} </h5>
+            <h5>Last Name: {{ lecturer.user.last_name }} </h5>
+            <h5>Email: {{ lecturer.user.email }}</h5>
+            <h5>DOB: {{ lecturer.dob }}</h5>
+            <br>
+
             <ul class="list-group">
                 <h5>Classes assigned to Lecturer</h5>
                 {% for class in lecturer.class_set.all %}
