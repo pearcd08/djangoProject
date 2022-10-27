@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{#college day#}
+{% block content %}
+
+    {% if user.is_authenticated and user.groups.all.0.name == "Student" %}
+        <h3> {{ current_student }} - Classes</h3>
+
+        <ul class="list-group">
+            {% for class in student_classes %}
+                <li class="list-group-item" style="width: 500px">
+                    <a href="{% url 'student-attendance-detail' class.id %}">{{ class }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <H1>YOU DONT HAVE ACCESS</H1>
+    {% endif %}
+{% endblock %}

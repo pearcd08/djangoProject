@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}
+ Add Semester
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated and user.is_superuser %}
+        <h1>Semester Registration</h1>
+        <form method="post" action="{% url 'add-semester' %}">
+            {% csrf_token %}
+            <p>Year: <input type="number" min="2022" max="2122" onKeyDown="return false" name="year"></p>
+            <p>Name: <input type="text" name="name"></p>
+            <button class="btn btn-success">Save Semester</button>
+        </form>
+        <br>        {{ message }}
+        <a href="{% url 'semester-list' %}" class="btn btn-primary">Back</a>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+{% endblock %}
+

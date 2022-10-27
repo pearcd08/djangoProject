@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Upload File
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated and user.is_superuser %}
+        <form method="post" action="{% url 'upload-students' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="myfile">
+            <br>
+            <br>
+            <button class="btn btn-primary">Upload</button>
+        </form>
+        <p style="color: red"> {{ filemessage }}</p>
+        <br>
+        {% if success_usernames %}
+            <h5 style="color: green">Successfully uploaded these students</h5>
+
+            {% for  i in success_usernames %}
+                <p> {{ i }}</p>
+            {% endfor %}
+            <br>
+        {% endif %}
+        {% if failed_usernames %}
+            <h5 style="color: red">These usernames already existed</h5>
+        {% endif %}
+        {% for  i in failed_usernames %}
+            <p> {{ i }}</p>
+        {% endfor %}
+        <br>
+        {% if upload_file_url %}
+            <h5>URL Location: {{ upload_file_url }}</h5>
+        {% endif %}
+        <br>
+        <a href="{% url 'student-list' %}" class="btn btn-primary">Back</a>
+    {% else %}
+        <H1>YOU DONT HAVE ACCESS</H1>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            <h1>All Classes</h1>
+            <ul class="list-group">
+                {% for Class in object_list %}
+                    <li class="list-group-item" style="width: 500px">
+                        <a href="{% url 'class-detail' Class.id %}">{{ Class.number }} - {{ Class.course.name }}</a>
+
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% elif user.groups.all.0.name == "Lecturer" %}
+            <h1>Your Classes</h1>
+            <ul class="list-group">
+                {% for Class in object_list %}
+                    {% if user.lecturer.pk == Class.lecturer.pk %}
+                        <li class="list-group-item" style="width: 500px">
+                            <a href="{% url 'class-detail' Class.id %}">{{ Class.number }} - {{ Class.course.name }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if user.is_superuser %}
+            <a href="{% url 'add-class' %}" class="btn btn-success">Add Class</a>
+        {% endif %}
+
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+
+{% endblock %}
+

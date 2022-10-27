@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ class }}
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            <br>
+            <h5>Class Number: {{ class.number }}</h5>
+            <h5>Course: <a href="{% url 'course-detail' class.course.pk %} ">{{ class.course }}</a></h5>
+            <h5>Semester: <a href="{% url 'semester-detail' class.semester.pk %} ">{{ class.semester }}</a></h5>
+
+            {% if class.lecturer %}
+                <h5>Lecturer: <a href="{% url 'lecturer-detail' class.lecturer.pk %} ">{{ class.lecturer }}</a></h5>
+            {% else %}
+                No Lecturer Assigned
+            {% endif %}
+            <br>
+
+            <p style="color: red">{{ datemessage }}</p>
+            <form action="{% url 'add-collegeday' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="{{ class.pk }}" name="class_id">
+                <input type="date" name="date">
+                <button class="btn btn-success">Add College Day</button>
+            </form>
+
+            <h5>Class Dates:</h5>
+            <ul class="list-group" style="width: 400px">
+                {% for collegeday in class.collegeday_set.all %}
+                    <li class="list-group-item" style="width: 500px">
+                        <a href="{% url 'collegeday-detail' collegeday_id=collegeday.id %}"> {{ collegeday }}</a>
+                        <a href="{% url 'remove-collegeday' collegeday_id=collegeday.pk %} "
+                           class="btn btn-danger">Remove College Day</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <br>
+
+            <h5>Enrolled Students:</h5>
+            <ul class="list-group" style="width: 400px">
+                {% for student in class.students.all %}
+                    <li class="list-group-item" style="width: 500px">
+                        <a href="{% url 'student-detail' student.pk %}">{{ student }}</a>
+                        <a href="{% url 'withdraw-student' class_id=class.id student_id=student.student_id %} "
+                           class="btn btn-danger">Withdraw</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <br>
+
+            <h5>Other Students</h5>
+            <ul class="list-group" style="width: 400px">
+                {% for student in students %}
+                    <li class="list-group-item">
+                        {% if student not in class.students.all %}
+                            {% if user.is_superuser %}
+                                <a href="{% url 'student-detail' student.pk %}">{{ student }}</a>
+                                <a href="{% url 'enrol-student' class_id=class.id student_id=student.student_id %}"
+                                   class="btn btn-success">Enroll</a>
+                            {% else %}
+                                <p>{{ student }}<p>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <br>
+            <br>
+
+            <a href="{% url 'class-list' %}" class="btn btn-primary">Back</a>
+            <a href="{% url 'update-class' class.pk %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'delete-class' class.pk %}" class="btn btn-danger">Delete</a>
+
+
+
+        {% elif user.groups.all.0.name == "Lecturer" %}
+            <ul class="list-group">
+                <h3>{{ class }} - College Days</h3>
+                {% for collegeday in class.collegeday_set.all %}
+                    <li class="list-group-item" style="width: 500px">
+                        <a href="{% url 'collegeday-detail' collegeday_id=collegeday.id %}"> {{ collegeday }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+                 <a href="{% url 'class-list' %}" class="btn btn-primary">Back</a>
+        {% endif %}
+
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+
+{% endblock %}

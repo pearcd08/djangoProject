@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}
+  Semesters
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            <h1>Semesters</h1>
+            <ul class="list-group">
+                {% for Semester in object_list %}
+                    <li class="list-group-item">
+                        <a href="{% url 'semester-detail' Semester.id %}">{{ Semester }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <br>
+            <a href="{% url 'add-semester' %}" class="btn btn-success">Add Semester</a>
+
+        {% else %}
+            <h1>YOU DON'T HAVE ACCESS</h1>
+        {% endif %}{% endif %}
+{% endblock %}

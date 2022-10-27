@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{#college day#}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if user.is_superuser or user.groups.all.0.name == "Lecturer" %}
+
+            <h5>Date: </h5>
+            {{ collegeday.collegedate }}
+            <br>
+            <h5>Class:</h5>
+            {{ collegeday.collegeclass }}
+            <br>
+            <h5>Course:</h5>
+            {{ collegeday.collegeclass.course }}
+            <br>
+            <h5>Lecturer:</h5>
+            {{ collegeday.collegeclass.lecturer }}
+            <br>
+            <br>
+            <h5>Present Students:</h5>
+            <ul class="list-group">
+                {% for student in collegeday.students.all %}
+                    <li class="list-group-item" style="width: 500px">
+                        {% if user.groups.all.0.name == "Lecturer" %}
+                            <p>{{ student }}<a
+                                    href="{% url 'mark-as-absent'  collegeday_id=collegeday.id student_id=student.student_id %} "
+                                    class="btn btn-danger">Mark As Absent</a></p>
+                        {% else %}
+                            <p>{{ student }}</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <h5>Absent Students:</h5>
+            <ul class="list-group">
+                {% for student in students %}
+                    <li class="list-group-item" style="width: 500px">
+                        {% if student not in collegeday.students.all %}
+                            {% if user.groups.all.0.name == "Lecturer" %}
+                                <p>{{ student }}<a
+                                        href="{% url 'mark-as-present'  collegeday_id=collegeday.id student_id=student.student_id %} "
+                                        class="btn btn-success">Mark
+                                    As Present</a></p>
+                            {% else %}
+                                <p>{{ student }}</p>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% endif %}
+    {% else %}
+        <H1>YOU DONT HAVE ACCESS</H1>
+    {% endif %}
+{% endblock %}

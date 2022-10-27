@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+  {{ semester }} detail
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated and user.is_superuser %}
+        <h1> {{ semester }} Detail</h1>
+        <h1> {{ class.semester }} </h1>
+        {% if assignedclasses.exists %}
+            <h3>Classes in Semester</h3>
+        {% else %}
+            <h3>This semester has no classes</h3>
+        {% endif %}
+        <ul class="list-group">
+            {% for class in assignedclasses %}
+                <li class="list-group-item">
+                    <a href="{% url 'class-detail' class.id %}">{{ class }}</a>
+
+                </li>
+            {% endfor %}
+        </ul>
+        <br>
+        <a href="{% url 'semester-list' %}" class="btn btn-primary">Back</a>
+        <a href="{% url 'update-semester' semester.id %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'delete-semester' semester.id %}" class="btn btn-danger">Delete</a>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+{% endblock %}
+

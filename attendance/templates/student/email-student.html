@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}
+    Send email
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated and user.is_superuser %}
+        <form action="{% url 'email-student' student_id=student.student_id class_id=class.id %}" method="post">
+            {% csrf_token %}
+            <p>Student: <input type="text" name="subject" value="{{ student }}" style="width: 400px" onkeydown="return false"></p>
+            <p>Email: <input type="text" name="subject" value="{{ studentemail }}" style="width: 400px"  onkeydown="return false"></p>
+            <p>Subject: <input type="text" name="subject" value="Bad Attendance for {{ class }}"style="width: 400px" ></p>
+            <p>Body: <textarea cols="50" rows="10" name="body" value="{{ student.user.name }} " style="width: 400px" ></textarea></p>
+            <button class="btn btn-success">Send</button>
+            {{ message }}
+        </form>
+                   <a href="{% url 'student-detail' student.pk %}" class="btn btn-primary">Back</a>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+
+{% endblock %}

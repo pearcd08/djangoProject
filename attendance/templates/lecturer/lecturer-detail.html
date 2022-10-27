@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ lecturer }}
+{% endblock %}
+{% block content %}
+    <br>
+    <h5>First Name: {{ lecturer.user.first_name }} </h5>
+    <h5>Last Name: {{ lecturer.user.last_name }} </h5>
+    <h5>Email: {{ lecturer.user.email }}</h5>
+    <h5>DOB: {{ lecturer.dob }}</h5>
+    <br>
+    {% if user.is_authenticated %}
+        {% if request.user.is_superuser %}
+            <ul class="list-group">
+                <h5>Classes assigned to Lecturer</h5>
+                {% for class in lecturer.class_set.all %}
+                    <li class="list-group-item">
+                        <a href="{% url 'class-detail' class.pk %}">{{ class }}</a>
+                        <a href="{% url 'withdraw-lecturer' class_id=class.id lecturer_id=lecturer.lecturer_id %} "
+                           class="btn btn-danger">Withdraw Lecturer</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <ul class="list-group">
+                <h5>Classes with no Lecturer</h5>
+                {% for class in availableclass %}
+                    <li class="list-group-item">
+                        <a href="{% url 'class-detail' class.pk %}">{{ class }}</a>
+                        <a href="{% url 'assign-lecturer' class_id=class.id lecturer_id=lecturer.lecturer_id %} "
+                           class="btn btn-primary">Assign Lecturer</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <br>
+            <br>
+            <a href="{% url 'lecturer-list' %}" class="btn btn-primary">Back</a>
+            <a href="{% url 'update-lecturer' lecturer.pk %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'delete-lecturer' lecturer.lecturer_id %}" class="btn btn-danger">Delete</a>
+        {% else %}
+            <p>You don't have permission to be here</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

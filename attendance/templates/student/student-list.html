@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated and user.is_superuser %}
+        <br>
+        <h5> {% block title %}
+            Students
+        {% endblock %}  </h5>
+        <br>
+        <ul class="list-group" style="width: 400px">
+            {% for Student in object_list %}
+                <li class="list-group-item" style="width: 500px">
+                    <a href="{% url 'student-detail' Student.student_id %}">{{ Student }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <br>
+
+        <a href="{% url 'add-student' %}" class="btn btn-success">Add Student</a>
+        <a href="{% url 'upload-students' %}" class="btn btn-warning" method="post">Upload Students</a>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+{% endblock %}
+
+

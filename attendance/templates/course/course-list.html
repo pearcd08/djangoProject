@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated and user.is_superuser %}
+        {% block title %}
+            <h5>Courses</h5>
+        {% endblock %}
+
+        <ul class="list-group">
+            {% for Course in object_list %}
+                <li class="list-group-item" style="width: 500px">
+                    <a href="{% url 'course-detail' Course.id %}"> {{ Course }}</a>
+
+                </li>
+            {% endfor %}
+        </ul>
+        <br>
+        <a href="{% url 'add-course' %}" class="btn btn-success">Add Course</a>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+
+{% endblock %}
+

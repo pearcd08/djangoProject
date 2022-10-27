@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ student }}
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated and user.is_superuser %}
+
+        <br>
+
+        <h5>First Name: {{ student.user.first_name }} </h5>
+        <h5>Last Name: {{ student.user.last_name }} </h5>
+        <h5>Email: {{ student.user.email }}</h5>
+        <h5>DOB: {{ student.dob }}</h5>
+        <br>
+        <br>
+        <h3>{{ student }}'s Classes</h3>
+        <ul class="list-group">
+            {% for class in student_classes %}
+                <li class="list-group-item" style="width: 500px">
+                    <a href="{% url 'student-class-detail' student.student_id class.id %}">{{ class }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <br>
+        <br>
+        <a href="{% url 'student-list' %}" class="btn btn-primary">Back</a>
+        <a href="{% url 'update-student' student.pk %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'delete-student' student.student_id %}" class="btn btn-danger">Delete</a>
+
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+
+{% endblock %}
+

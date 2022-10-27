@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if "lecturer" in request.path or "student" in request.path %}
+        <h1>Update: {{ user.first_name }} {{ user.last_name }}</h1>
+    {% elif "class" in request.path %}
+        <h1>Update: {{ class }}</h1>
+    {% elif "course" in request.path %}
+        <h1>Update: {{ course }}</h1>
+    {% elif "semester" in request.path %}
+        <h1>Update: {{ semester }}</h1>
+    {% endif %}
+
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {{ form.media }}
+            <input type="submit" value="Update">
+        </form>
+    </div>
+{% endblock %}

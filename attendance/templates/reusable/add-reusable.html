@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+Add Reusable
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if user.is_authenticated and user.is_superuser %}
+
+        {% if "class" in request.path %}
+            <h1>Add New Class</h1>
+        {% elif "course" in request.path %}
+            <h1>Add New Course</h1>
+        {% endif %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+
+{% endblock %}

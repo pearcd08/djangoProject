@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated and user.is_superuser %}
+        <br>
+        <h5> {% block title %}
+            Lecturers
+        {% endblock %}  </h5>
+        <br>
+        <ul class="list-group" style="width: 400px">
+            {% for Lecturer in object_list %}
+                <li class="list-group-item" style="width: 500px">
+                    <a href="{% url 'lecturer-detail' Lecturer.pk %}">{{ Lecturer }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <br>
+
+        <a href="{% url 'add-lecturer' %}" class="btn btn-success">Add Lecturer</a>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS</h1>
+    {% endif %}
+{% endblock %}
+
+
+
+
