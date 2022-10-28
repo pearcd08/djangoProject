@@ -16,11 +16,13 @@
         <br>
         <h3>{{ student }}'s Classes</h3>
         <ul class="list-group">
+        {% if student_classes %}
             {% for class in student_classes %}
                 <li class="list-group-item" style="width: 500px">
                     <a href="{% url 'student-class-detail' student.student_id class.id %}">{{ class }}</a>
                 </li>
             {% endfor %}
+        {% endif %}
         </ul>
         <br>
         <br>

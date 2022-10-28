@@ -1,6 +1,5 @@
 import re
 
-
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
@@ -28,6 +27,7 @@ class HomeView(ListView):
 class ListStudent(ListView):
     model = Student
     template_name = "student/student-list.html"
+
 
 class ListLecturer(ListView):
     model = Lecturer
@@ -136,24 +136,31 @@ def studentDetail(request, student_id):
 
     classList = list(percentage_classes)
     percentageList = list()
+    if len(classList) > 0:
+        i = 0
+        while i < len(classList):
+            classtochange = str(classList[i])
+            class_id = re.sub(r'[^0-9]', '', classtochange)
+            total_collegedays = CollegeDay.objects.filter(collegeclass_id=class_id)
+            attended_collegedays = CollegeDay.objects.filter(collegeclass_id=class_id, students=student_id)
 
-    i = 0
-    while i < len(classList):
-        classtochange = str(classList[i])
-        class_id = re.sub(r'[^0-9]', '', classtochange)
-        total_collegedays = CollegeDay.objects.filter(collegeclass_id=class_id)
-        attended_collegedays = CollegeDay.objects.filter(collegeclass_id=class_id, students=student_id)
+            attendance_result = attended_collegedays.count() / total_collegedays.count()
+            attendance_percentage = int(round(attendance_result * 100))
+            percentageList.append(attendance_percentage)
 
-        attendance_result = attended_collegedays.count() / total_collegedays.count()
-        attendance_percentage = int(round(attendance_result * 100))
-        percentageList.append(attendance_percentage)
+            return render(request, "student/student-detail.html", {
+                "student": student,
+                "student_classes": student_classes,
+                "percentages": percentageList
 
-        return render(request, "student/student-detail.html", {
-            "student": student,
-            "student_classes": student_classes,
-            "percentages": percentageList
+            })
 
-        })
+    return render(request, "student/student-detail.html", {
+        "student": student,
+        "student_classes": student_classes,
+        "percentages": percentageList
+
+    })
 
 
 def studentClassDetail(request, student_id, class_id):
@@ -370,7 +377,6 @@ def uploadStudents(request):
                     student.dob = dob
                     user.groups.add(1)
                     student.save()
-                    user.save()
                     i = i + 1
                     j = j + 1
                     success_usernames.append(firstname + " " + lastname + " - " + password)
@@ -405,7 +411,6 @@ def uploadStudents(request):
 
 
 # Lecturers
-
 
 
 def AddCollegeDay(request):
