@@ -1,5 +1,5 @@
 import re
-from turtle import pd
+
 
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
